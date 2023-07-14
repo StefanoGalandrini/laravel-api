@@ -5,38 +5,41 @@
 			account, please download any data or information that you wish to retain.</p>
 	</header>
 
-	<button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#deleteAccount">Delete Account</button>
-</section>
-
-<div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="deleteAccountLabel"
-	aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="deleteAccountLabel">Are you sure?</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+	<form method="POST" action="{{ route('admin.profile.destroy') }}">
+		@csrf
+		@method('delete')
+		<div>
+			<div>
+				<label for="passwordDelete">Password</label>
+				<input id="passwordDelete" name="password" type="password">
+				@error('passwordDelete')
+					{{ $message }}
+				@enderror
 			</div>
-			<form method="POST" action="{{ route('admin.profile.destroy') }}">
-				@csrf
-				@method('delete')
+
+			<button class="btn btn-danger mt-2">Delete Account</button>
+		</div>
+	</form>
+	{{--
+	<!-- Modal -->
+	<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="accountModalLabel">Delete Account</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 				<div class="modal-body">
-					<p>Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your
-						password to confirm.</p>
-					<div class="form-group">
-						<label for="password_delete">Password</label>
-						<input id="password_delete" name="password" type="password" class="form-control">
-						@error('password')
-							<small class="text-danger">{{ $message }}</small>
-						@enderror
-					</div>
+					This account will be permanently deleted. Are you sure?
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-danger">Delete</button>
+					<button type="button" class="btn btn-danger">Yes</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				</div>
-			</form>
+			</div>
 		</div>
-	</div>
-</div>
+	</div> --}}
+</section>
