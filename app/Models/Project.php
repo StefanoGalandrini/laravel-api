@@ -21,6 +21,7 @@ class Project extends Model
         'description',
         'creation_date',
         'url_repo',
+        'image',
     ];
 
     public function type()
