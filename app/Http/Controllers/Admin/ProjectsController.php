@@ -86,7 +86,6 @@ class ProjectsController extends Controller
         $newProject->slug           = Project::slugger($data['title']);
         $newProject->type_id        = $data['type_id'];
         $newProject->url_image      = $data['url_image'];
-        $newProject->image          = $imagePath;
         $newProject->description    = $data['description'];
         $newProject->creation_date  = $data['creation_date'];
         $newProject->url_repo       = $data['url_repo'];
