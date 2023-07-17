@@ -16,7 +16,6 @@ class ProjectsController extends Controller
     public function index()
     {
         $projects = Project::with('type', 'technologies')->paginate(6);
-
         return response()->json($projects);
     }
 
@@ -30,7 +29,7 @@ class ProjectsController extends Controller
      */
     public function show($slug)
     {
-        $project = Project::where('slug', $slug)->firstOrFail();
+        $project = Project::with('type', 'technologies')->where('slug', $slug)->firstOrFail();
         return response()->json($project);
     }
 }
