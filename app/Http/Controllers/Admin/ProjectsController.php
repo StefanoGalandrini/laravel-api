@@ -158,6 +158,7 @@ class ProjectsController extends Controller
         $project->description   = $data['description'];
         $project->creation_date = $data['creation_date'];
         $project->url_repo      = $data['url_repo'];
+        $project->slug          = Project::slugger($data['title']);
 
         $project->update();
 

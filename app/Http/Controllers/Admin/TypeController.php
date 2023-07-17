@@ -10,8 +10,8 @@ class TypeController extends Controller
 {
     // Validations
     protected $validations = [
-        'name' => 'required|max:20',
-        'description' => 'required|string|max:500',
+        'name'          => 'required|max:20',
+        'description'   => 'required|string|max:500',
     ];
 
     protected $validation_messages = [
@@ -56,10 +56,11 @@ class TypeController extends Controller
 
         $newType->name = $data['name'];
         $newType->description = $data['description'];
+        $newType->slug = Type::slugger($data['name']);
 
         $newType->save();
 
-        return redirect()->route('admin.types.index')->with('create_success', $newType);
+        return redirect()->route('admin.types.index', ['type' => $newType])->with('create_success', $newType);
     }
 
     /**
@@ -68,8 +69,9 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function show(Type $type)
+    public function show($slug)
     {
+        $type = Type::where('slug', $slug)->firstOrFail();
         return view('admin.types.show', ['type' => $type]);
     }
 
@@ -81,6 +83,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
+        $type = Type::where('slug', $slug)->firstOrFail();
         return view('admin.types.edit', ['type' => $type]);
     }
 
@@ -91,20 +94,20 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Type $type)
+    public function update(Request $request, $slug)
     {
+        $type = Type::where('slug', $slug)->firstOrFail();
         // Validate Data
         $request->validate($this->validations, $this->validation_messages);
 
         $data = $request->all();
 
         // Update Data
-        $updated = $type->update([
-            'name'          => $data['name'],
-            'description'   => $data['description'],
-        ]);
+        $type->name = $data['name'];
+        $type->description = $data['description'];
+        $type->slug = Type::slugger($data['name']);
 
-        // $type->projects()->sync($data['projects'] ?? []);
+        $type->update();
 
         return redirect()->route('admin.types.show', ['type' => $type])->with('update_success', $type);
     }
@@ -115,8 +118,10 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy($slug)
     {
+        $type = Type::where('slug', $slug)->firstOrFail();
+
         foreach ($type->projects as $project) {
             $project->type_id = 1;
             $project->update();

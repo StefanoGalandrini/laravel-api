@@ -36,7 +36,10 @@ class TechnologiesTableSeeder extends Seeder
         ];
 
         foreach ($technologies as $technology) {
-            Technology::create($technology);
+            Technology::create([
+                'name' => $technology['name'],
+                'slug' => Technology::slugger($technology['name']),
+            ]);
         }
     }
 }

@@ -55,6 +55,7 @@ class TechnologyController extends Controller
         $newTechnology = new Technology();
 
         $newTechnology->name = $data['name'];
+        $newTechnology->slug = Technology::slugger($data['name']);
 
         $newTechnology->save();
 
@@ -67,8 +68,9 @@ class TechnologyController extends Controller
      * @param  \App\Models\Technology  $technology
      * @return \Illuminate\Http\Response
      */
-    public function show(Technology $technology)
+    public function show($slug)
     {
+        $technology = Technology::where('slug', $slug)->firstOrFail();
         return view('admin.technologies.show', ['technology' => $technology]);
     }
 
@@ -78,8 +80,9 @@ class TechnologyController extends Controller
      * @param  \App\Models\Technology  $technology
      * @return \Illuminate\Http\Response
      */
-    public function edit(Technology $technology)
+    public function edit($slug)
     {
+        $technology = Technology::where('slug', $slug)->firstOrFail();
         return view('admin.technologies.edit', ['technology' => $technology]);
     }
 
@@ -90,17 +93,19 @@ class TechnologyController extends Controller
      * @param  \App\Models\Technology  $technology
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Technology $technology)
+    public function update(Request $request, $slug)
     {
+        $technology = Technology::where('slug', $slug)->firstOrFail();
+
         // Validate Data
         $request->validate($this->validations, $this->validation_messages);
 
         $data = $request->all();
 
         // Update Data
-        $updated = $technology->update([
-            'name' => $data['name'],
-        ]);
+        $technology->name = $data['name'];
+        $technology->slug = Technology::slugger($data['name']);
+        $technology->update();
 
         $technology->projects()->sync($data['projects'] ?? []);
 
@@ -113,8 +118,10 @@ class TechnologyController extends Controller
      * @param  \App\Models\Technology  $technology
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Technology $technology)
+    public function destroy($slug)
     {
+        $technology = Technology::where('slug', $slug)->firstOrFail();
+
         // Detach all related projects first
         $technology->projects()->detach();
 

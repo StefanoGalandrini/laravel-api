@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
 use App\Models\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -40,7 +39,11 @@ class TypesTableSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            Type::create($type);
+            Type::create([
+                'name' => $type['name'],
+                'description' => $type['description'],
+                'slug' => Type::slugger($type['name']),
+            ]);
         }
     }
 }
