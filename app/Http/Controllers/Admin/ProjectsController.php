@@ -69,12 +69,18 @@ class ProjectsController extends Controller
 
         $data = $request->all();
 
-        //Upload file
-        $imagePath = Storage::put('uploads', $data['image']);
-
-
         // Save Data
         $newProject = new Project();
+
+        // Check if 'image' exists in update request
+        if ($request->has('image')) {
+
+            // Save new image
+            $imagePath = Storage::put('uploads', $data['image']);
+
+            //Update field containing new image
+            $newProject->image = $imagePath;
+        }
 
         $newProject->title          = $data['title'];
         $newProject->slug           = Project::slugger($data['title']);
