@@ -15,7 +15,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('type', 'technologies')->paginate(4);
+        $projects = Project::with('type', 'technologies')->paginate(6);
 
         return response()->json($projects);
     }
@@ -28,8 +28,9 @@ class ProjectsController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($slug)
     {
-        //
+        $project = Project::where('slug', $slug)->firstOrFail();
+        return response()->json($project);
     }
 }
