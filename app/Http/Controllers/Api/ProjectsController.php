@@ -13,10 +13,24 @@ class ProjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::with('type', 'technologies')->paginate(6);
-        return response()->json($projects);
+        // Filtro risultati
+
+        $searchString = $request->query('q', '');
+
+        $query = Project::with('type', 'technologies');
+
+        if ($searchString) {
+            $query->where('title', 'LIKE', "%{$searchString}%");
+        }
+
+        $projects = $query->paginate(6);
+
+        return response()->json([
+            'success'   => true,
+            'results'   => $projects,
+        ]);
     }
 
 
@@ -29,7 +43,22 @@ class ProjectsController extends Controller
      */
     public function show($slug)
     {
-        $project = Project::with('type', 'technologies')->where('slug', $slug)->firstOrFail();
-        return response()->json($project);
+        $project = Project::with('type', 'technologies')->where('slug', $slug)->first();
+
+        return response()->json([
+            'success'   => $project ? true : false,
+            'results'   => $project,
+        ]);
+    }
+
+
+    public function random()
+    {
+        $project = Project::inRandomOrder()->limit(12)->get();
+
+        return response()->json([
+            'success'   => true,
+            'results'   => $project,
+        ]);
     }
 }
