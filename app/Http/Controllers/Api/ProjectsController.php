@@ -19,13 +19,7 @@ class ProjectsController extends Controller
 
         $searchString = $request->query('q', '');
 
-        $query = Project::with('type', 'technologies');
-
-        if ($searchString) {
-            $query->where('title', 'LIKE', "%{$searchString}%");
-        }
-
-        $projects = $query->paginate(6);
+        $projects = Project::with('type', 'technologies')->where('title', 'LIKE', "%{$searchString}%")->paginate(6);
 
         return response()->json([
             'success'   => true,
