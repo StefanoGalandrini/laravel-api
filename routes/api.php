@@ -20,4 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('projects', [ProjectsController::class, 'index'])->name('api.projects.index');
+Route::get('projects/random', [ProjectsController::class, 'random'])->name('api.projects.random');
 Route::get('projects/{project}', [ProjectsController::class, 'show'])->name('api.projects.show');
+Route::get('categories', [CategoryController::class, 'index'])->name('api.categories.index');
