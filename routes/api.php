@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\ProjectsController;
 use App\Http\Controllers\Api\TechnologyController;
 use App\Http\Controllers\Api\TypeController;
@@ -30,3 +31,6 @@ Route::get('types', [TypeController::class, 'index'])->name('api.types.index');
 
 // Route for Technology search
 Route::get('technologies', [TechnologyController::class, 'index'])->name('api.technologies.index');
+
+// Route for sending emails
+Route::post('leads/', [LeadController::class, 'store'])->name('api.leads.store');

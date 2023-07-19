@@ -19,7 +19,27 @@ class ProjectsController extends Controller
 
         $searchString = $request->query('q', '');
 
-        $projects = Project::with('type', 'technologies')->where('title', 'LIKE', "%{$searchString}%")->paginate(6);
+        // Filtro per Type e Technology
+        $type = $request->query('type');
+        $technology = $request->query('technology');
+
+        // $projects = Project::with('type', 'technologies')->where('title', 'LIKE', "%{$searchString}%")->paginate(6);
+        $projectsQuery = Project::with('type', 'technologies')->where('title', 'LIKE', "%{$searchString}%");
+
+        if (!is_null($type)) {
+            $projectsQuery->whereHas('type', function ($query) use ($type) {
+                $query->where('id', $type);
+            });
+        }
+
+        if (!is_null($technology)) {
+            $projectsQuery->whereHas('technologies', function ($query) use ($technology) {
+                $query->where('id', $technology);
+            });
+        }
+
+        $projects = $projectsQuery->paginate(6);
+
 
         return response()->json([
             'success'   => true,
