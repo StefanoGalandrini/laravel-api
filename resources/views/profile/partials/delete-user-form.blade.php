@@ -10,9 +10,9 @@
 		@method('delete')
 		<div>
 			<div>
-				<label for="passwordDelete">Password</label>
-				<input id="passwordDelete" name="password" type="password">
-				@error('passwordDelete')
+				<label for="password_delete">Password</label>
+				<input id="password_delete" name="password" type="password">
+				@error('password')
 					{{ $message }}
 				@enderror
 			</div>
