@@ -56,7 +56,7 @@ class LeadController extends Controller
 
 
         //send email to admin to manage request
-        // Mail::to(env('ADMIN_ADDRESS', 'admin@boolpress.com'))->send(new MailToAdmin($newLead));
+        Mail::to(env('ADMIN_ADDRESS', 'admin@boolpress.com'))->send(new MailToAdmin($newLead));
 
         // return success to frontend
         return response()->json([
