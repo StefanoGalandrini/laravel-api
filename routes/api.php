@@ -33,4 +33,4 @@ Route::get('types', [TypeController::class, 'index'])->name('api.types.index');
 Route::get('technologies', [TechnologyController::class, 'index'])->name('api.technologies.index');
 
 // Route for sending emails
-Route::post('leads/', [LeadController::class, 'store'])->name('api.leads.store');
+Route::post('leads', [LeadController::class, 'store'])->name('api.leads.store');

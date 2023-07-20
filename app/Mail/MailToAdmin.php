@@ -34,7 +34,7 @@ class MailToAdmin extends Mailable
     {
         return new Envelope(
             subject: 'Nuova richiesta da ' . $this->lead->name,
-            replyTo: env('ADMIN_ADDRESS', 'admin@boolpress.com'),
+            replyTo: 'admin@boolpress.com',
         );
     }
 

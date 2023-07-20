@@ -33,7 +33,7 @@ class LeadController extends Controller
         $data = $request->all();
 
         // validate
-         $validator = Validator::make($data, $this->validations);
+        $validator = Validator::make($data, $this->validations);
 
         if ($validator->fails()) {
             return response()->json([
@@ -56,11 +56,11 @@ class LeadController extends Controller
 
 
         //send email to admin to manage request
-        Mail::to(env('ADMIN_ADDRESS', 'admin@boolpress.com'))->send(new MailToAdmin($newLead));
+        // Mail::to(env('ADMIN_ADDRESS', 'admin@boolpress.com'))->send(new MailToAdmin($newLead));
 
         // return success to frontend
         return response()->json([
             'success' => true,
         ]);
-    };
+    }
 }

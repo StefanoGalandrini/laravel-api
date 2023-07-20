@@ -81,7 +81,7 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit(Type $type)
+    public function edit($slug)
     {
         $type = Type::where('slug', $slug)->firstOrFail();
         return view('admin.types.edit', ['type' => $type]);
