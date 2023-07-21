@@ -20,26 +20,28 @@ class ProjectsController extends Controller
         $searchString = $request->query('q', '');
 
         // Filtro per Type e Technology
-        $type = $request->query('type');
-        $technology = $request->query('technology');
+        $typeId = $request->query('type');
+        $technologyId = $request->query('technology');
 
-        // $projects = Project::with('type', 'technologies')->where('title', 'LIKE', "%{$searchString}%")->paginate(6);
-        $projectsQuery = Project::with('type', 'technologies')->where('title', 'LIKE', "%{$searchString}%");
+        $query = Project::with('type', 'technologies');
 
-        if (!is_null($type)) {
-            $projectsQuery->whereHas('type', function ($query) use ($type) {
-                $query->where('id', $type);
+        if ($searchString) {
+            $query = $query->where('title', 'LIKE', "%${searchString}%");
+        }
+
+        if ($typeId) {
+            $query->whereHas('type', function ($q) use ($typeId) {
+                $q->where('id', $typeId);
             });
         }
 
-        if (!is_null($technology)) {
-            $projectsQuery->whereHas('technologies', function ($query) use ($technology) {
-                $query->where('id', $technology);
+        if ($technologyId) {
+            $query->whereHas('technologies', function ($q) use ($technologyId) {
+                $q->where('id', $technologyId);
             });
         }
 
-        $projects = $projectsQuery->paginate(6);
-
+        $projects = $query->paginate(6);
 
         return response()->json([
             'success'   => true,
